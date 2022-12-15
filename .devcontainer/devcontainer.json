@@ -1,0 +1,33 @@
+{
+	"name": "PSTAT-135",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "dev",
+	
+	"forwardPorts": [8888],
+	"portsAttributes": {
+		"8888": {
+			"label": "JupyterLab",
+			"requireLocalPort": true,
+			"onAutoForward": "ignore"
+		}
+	},
+
+	"remoteUser": "jovyan",
+	"workspaceFolder": "/home/jovyan/work",
+
+	"customizations": {
+		"vscode": {
+			"settings": { 
+				"python.defaultInterpreterPath": "/opt/conda/bin/python"
+			},
+			
+			"extensions": [
+				"ms-python.python",
+				"ms-toolsai.jupyter",
+				"ms-toolsai.jupyter-keymap",
+				"quarto.quarto",
+				"tomoki1207.pdf"
+			]
+		}
+	}
+}

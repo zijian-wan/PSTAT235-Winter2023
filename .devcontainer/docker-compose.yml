@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  dev:
+
+    build: 
+      context: .
+      dockerfile: Dockerfile
+
+    image: ucsb/pstat-135:${TAG:-latest}
+
+    environment:
+      JUPYTERPORT: '8888'
+      GRANT_SUDO: 'yes'
+      SPARK_HOME: '/usr/local/spark'
+      SPARK_CONF_DIR: '/usr/local/spark/conf'
+      APACHE_SPARK_VERSION: '3.3.1'
+      SPARK_OPTS: '--driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M --driver-java-options=-Dlog4j.logLevel=info'
+      PYSPARK_PYTHONPATH_SET: '1'
+      PYTHONPATH: '/usr/local/spark/python/lib/py4j-0.10.9.5-src.zip:/usr/local/spark/python:'
+      CONDA_PYTHON_EXE: '/opt/conda/bin/python'
+
+    volumes:
+      - ..:/home/jovyan/work:cached
