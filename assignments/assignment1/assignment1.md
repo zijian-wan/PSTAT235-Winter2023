@@ -110,7 +110,8 @@ D. 58097
 
 What is your SQL code to obtain the info?
 
-SELECT COUNT(DISTINCT movieId) FROM `pstat235-zw.movie_ratings.ratings`
+SELECT COUNT(DISTINCT movieId)  
+FROM `pstat235-zw.movie_ratings.ratings`
 
 ## Question 4: highly rated movies
 
@@ -124,12 +125,12 @@ D. Casablanca (1942)
 
 What is your SQL code to obtain the info?
 
-SELECT title, COUNT(*) AS review_count, AVG(rating) AS avg_rating
-FROM `pstat235-zw.movie_ratings.ratings`
-INNER JOIN `pstat235-zw.movie_ratings.movies` ON `pstat235-zw.movie_ratings.movies`.movieId = `pstat235-zw.movie_ratings.ratings`.movieId
-GROUP BY title
-HAVING review_count > 10000
-ORDER BY avg_rating DESC
+SELECT title, COUNT(*) AS review_count, AVG(rating) AS avg_rating  
+FROM `pstat235-zw.movie_ratings.ratings`  
+INNER JOIN `pstat235-zw.movie_ratings.movies` ON `pstat235-zw.movie_ratings.movies`.movieId = `pstat235-zw.movie_ratings.ratings`.movieId  
+GROUP BY title  
+HAVING review_count > 10000  
+ORDER BY avg_rating DESC  
 LIMIT 10;
 
 ## Question 5: most watched movies
@@ -146,21 +147,21 @@ What is your SQL code to obtain the info?
 
 To find the most watched movie,
 
-SELECT title, COUNT(userId) AS user_count, AVG(rating) AS avg_rating
-FROM `pstat235-zw.movie_ratings.ratings`
-INNER JOIN `pstat235-zw.movie_ratings.movies` ON `pstat235-zw.movie_ratings.movies`.movieId = `pstat235-zw.movie_ratings.ratings`.movieId
-GROUP BY title
-ORDER BY user_count DESC
+SELECT title, COUNT(userId) AS user_count, AVG(rating) AS avg_rating  
+FROM `pstat235-zw.movie_ratings.ratings`  
+INNER JOIN `pstat235-zw.movie_ratings.movies` ON `pstat235-zw.movie_ratings.movies`.movieId = `pstat235-zw.movie_ratings.ratings`.movieId  
+GROUP BY title  
+ORDER BY user_count DESC  
 LIMIT 10;
 
 To examine the correlation between the number of ratings and the number of people watching,
 
-SELECT CORR(rating_count, user_count) AS corr
-FROM (
-  SELECT title, COUNT(*) AS rating_count, COUNT(userId) AS user_count
-  FROM `pstat235-zw.movie_ratings.ratings`
-  INNER JOIN `pstat235-zw.movie_ratings.movies` ON `pstat235-zw.movie_ratings.movies`.movieId = `pstat235-zw.movie_ratings.ratings`.movieId
-  GROUP BY title
+SELECT CORR(rating_count, user_count) AS corr  
+FROM (  
+  SELECT title, COUNT(*) AS rating_count, COUNT(userId) AS user_count  
+  FROM `pstat235-zw.movie_ratings.ratings`  
+  INNER JOIN `pstat235-zw.movie_ratings.movies` ON `pstat235-zw.movie_ratings.movies`.movieId = `pstat235-zw.movie_ratings.ratings`.movieId  
+  GROUP BY title  
 );
 
 The correlation is 1. The number of ratings is strongly correlated with the number of people watching it.
