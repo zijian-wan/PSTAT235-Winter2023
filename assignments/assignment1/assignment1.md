@@ -1,8 +1,8 @@
 # Assignment 1
 ## PSTAT 135/235
 
-### Name: ________________________
-### Perm Number: ________________________
+### Name: _______Zijian Wan________
+### Perm Number: _____4422853______
 
 
 ## MovieLens Dataset
@@ -38,13 +38,13 @@ Find your LOAD job information from `PROJECT HISTORY` (next to `PERSONAL HISTORY
 
 Post screenshot of your LOAD job information here:
 
-**Replace this text with your screenshot image**
+![movies-load-job-info](images/load-job-info.png){#fig-movies-job-info}
 
 ### Question 1b: `ratings` table
 
 Follow the same procedure as Question 1a to crate `ratings` table from `ratings.csv`. What happens?
 
-**Your response here**
+Local uploads are limited to 100 MB. We are advised to use Google Cloud Storage for larger files.
 
 **PSTAT 135 Students**: Upload `ratings.csv` file to Cloud Storage and create `ratings` table from it using the web interface. Then, post the screenshot of your LOAD job information here:
 
@@ -71,65 +71,96 @@ Follow the same procedure as Question 1a to crate `ratings` table from `ratings.
 
 Replace the section below with your own commands:
 ```bash
-gsutil ls gs://<YOUR-BUCKET-NAME>
-bq mk _______
-bq load --autodetect _______  _______
+gsutil ls gs://pstat235-zw
+bq mk movie_ratings.ratings
+bq load --autodetect movie_ratings.ratings gs://pstat235-zw/ratings.csv
 ```
 
 Also, post screenshot of your LOAD job information here:
 
-**Replace this text with your screenshot image**
+![ratings-load-job-info](images/ratings-load-job-info.png){#fig-ratings-job-info}
 
 
 ## Question 2: `ratings` table number of rows
 
-How many rows are there in `ratings` table?
+How many rows are there in `ratings` table? **C**
 
 A. 27753445  
 B. 27000001  
-C. 27753444  
+**C. 27753444**
 D. 27000000  
 
 ## Question 3: `movies` table number of rows
 
-How many rows are there in the `movies` table?
+How many rows are there in the `movies` table? **D**
 
 A. 57999  
 B. 58000  
 C. 58097  
-D. 58098  
+**D. 58098**  
 
 ## Question 3: number of unique movies
 
-How many unique `movieId`'s are in `ratings` table?
+How many unique `movieId`'s are in `ratings` table? **C**
 
 A. 52019  
 B. Around 27 million  
-C. 53889  
+**C. 53889**  
 D. 58097  
 
 What is your SQL code to obtain the info?
 
+SELECT COUNT(DISTINCT movieId) FROM `pstat235-zw.movie_ratings.ratings`
+
 ## Question 4: highly rated movies
 
 Which one of these movies are among top 10 highly rated movies, with at least
-10,000 reviews? (select all that apply)
+10,000 reviews? (select all that apply)  **C**
 
 A. Star Wars: Episode IV - A New Hope (1977)  
 B. Chinatown (1974)  
-C. Godfather  
+**C. Godfather**  
 D. Casablanca (1942)  
 
 What is your SQL code to obtain the info?
 
+SELECT title, COUNT(*) AS review_count, AVG(rating) AS avg_rating
+FROM `pstat235-zw.movie_ratings.ratings`
+INNER JOIN `pstat235-zw.movie_ratings.movies` ON `pstat235-zw.movie_ratings.movies`.movieId = `pstat235-zw.movie_ratings.ratings`.movieId
+GROUP BY title
+HAVING review_count > 10000
+ORDER BY avg_rating DESC
+LIMIT 10;
+
 ## Question 5: most watched movies
 
 Which movie is the most watched? Make an assumption that number of ratings is
-strongly correlated with number of people watching it.
+strongly correlated with number of people watching it. **A**
 
-A. Shawshank Redemption  
+**A. Shawshank Redemption**  
 B. Forrest Gump (1994)  
 C. Matrix  
 D. Toy Story (1995)  
 
 What is your SQL code to obtain the info?
+
+To find the most watched movie,
+
+SELECT title, COUNT(userId) AS user_count, AVG(rating) AS avg_rating
+FROM `pstat235-zw.movie_ratings.ratings`
+INNER JOIN `pstat235-zw.movie_ratings.movies` ON `pstat235-zw.movie_ratings.movies`.movieId = `pstat235-zw.movie_ratings.ratings`.movieId
+GROUP BY title
+ORDER BY user_count DESC
+LIMIT 10;
+
+To examine the correlation between the number of ratings and the number of people watching,
+
+SELECT CORR(rating_count, user_count) AS corr
+FROM (
+  SELECT title, COUNT(*) AS rating_count, COUNT(userId) AS user_count
+  FROM `pstat235-zw.movie_ratings.ratings`
+  INNER JOIN `pstat235-zw.movie_ratings.movies` ON `pstat235-zw.movie_ratings.movies`.movieId = `pstat235-zw.movie_ratings.ratings`.movieId
+  GROUP BY title
+);
+
+The correlation is 1. The number of ratings is strongly correlated with number of people watching it.
