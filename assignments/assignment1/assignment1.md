@@ -163,4 +163,4 @@ FROM (
   GROUP BY title
 );
 
-The correlation is 1. The number of ratings is strongly correlated with number of people watching it.
+The correlation is 1. The number of ratings is strongly correlated with the number of people watching it.
