@@ -99,7 +99,7 @@ B. 58000
 C. 58097  
 **D. 58098**  
 
-## Question 3: number of unique movies
+## Question 4: number of unique movies
 
 How many unique `movieId`'s are in `ratings` table? **C**
 
@@ -113,7 +113,7 @@ What is your SQL code to obtain the info?
 SELECT COUNT(DISTINCT movieId)  
 FROM `pstat235-zw.movie_ratings.ratings`
 
-## Question 4: highly rated movies
+## Question 5: highly rated movies
 
 Which one of these movies are among top 10 highly rated movies, with at least
 10,000 reviews? (select all that apply)  **C**
@@ -133,7 +133,7 @@ HAVING review_count > 10000
 ORDER BY avg_rating DESC  
 LIMIT 10;
 
-## Question 5: most watched movies
+## Question 6: most watched movies
 
 Which movie is the most watched? Make an assumption that number of ratings is
 strongly correlated with number of people watching it. **A**
